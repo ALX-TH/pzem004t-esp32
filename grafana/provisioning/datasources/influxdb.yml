@@ -1,0 +1,21 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB
+    type: influxdb
+    url: "http://159.65.125.173:8086"
+    access: proxy
+    user: monitoring
+    database: "monitoring"
+    isDefault: true
+    basicAuth: false
+    basicAuthUser: "monitoring"
+    basicAuthPassword: ""
+    withCredentials: false
+    secureJsonData:
+      token: 78DcKQnEm1oaCj56SbJ4Q2CL2jnYaqnXqNHo6qSZFgYgZC0qXVSD45kganTiGcqPRXiDnPTJEv8e69SrG5zm3w==
+      password: monitoring
+    jsonData:
+      version: Flux
+      organization: unity
+      defaultBucket: monitoring

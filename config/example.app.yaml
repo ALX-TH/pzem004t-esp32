@@ -1,0 +1,33 @@
+modules:
+
+  application:
+  InfluxClient:
+    url: "http://localhost:8086"
+    token: "****************************"
+    org: home
+    bucket: monitoring
+  MQTTClient:
+    host: 192.168.0.1
+    port: 1883
+    user: "mqttuser"
+    password: "*************"
+
+sensors:
+  PZEM004TSensor:
+    device:
+      class: "energy"
+      name: "pzem004t"
+      measurement: "energy"
+    mqtt:
+      topic: "tele/pzem004tv3_87A0B8/SENSOR"
+    schedule:
+      t1:
+        conditions:
+            - after: '07:00:00'
+              before: '22:59:59'
+      t2:
+        conditions:
+            - after: '00:00:01'
+              before: '06:59:59'
+            - after: '23:00:00'
+              before: '00:00:00' 

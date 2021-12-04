@@ -1,0 +1,61 @@
+version: '3.7'
+services:
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    networks:
+      - pzem004-network
+    ports:
+      - '8082:8082'
+      - '8086:8086'
+      - '8089:8089/udp'
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+    environment:
+      AUTH_ENABLED: "true"
+      INFLUXDB_HTTP_LOG_ENABLED: "false"
+      INFLUXDB_REPORTING_DISABLED: "true"
+      INFLUXDB_ADMIN_ENABLED: "true"
+      INFLUXDB_ADMIN_USER: "admin"
+      INFLUXDB_ADMIN_PASSWORD: "admin"
+      INFLUXDB_DB: "monitoring"
+      INFLUXDB_USER: "monitoring"
+      INFLUXDB_USER_PASSWORD: "monitoring"
+    restart: unless-stopped 
+    labels:
+      org.label-schema.group: "monitoring" 
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    networks:
+      - pzem004-network
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana    
+    environment:
+      GF_SERVER_ROOT_URL: "http://localhost:3000"
+      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_DISABLE_SIGNOUT_MENU: "true"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+      GF_PATHS_DATA: "/var/lib/grafana"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    depends_on:
+      - influxdb
+    restart: unless-stopped  
+    labels:
+      org.label-schema.group: "monitoring"    
+
+volumes:
+  influxdb_data:
+  grafana_data:
+
+networks:
+  pzem004-network:
+    name: pzem004
+    external: true
