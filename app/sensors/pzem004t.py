@@ -105,7 +105,7 @@ class EnergySensor(object):
         timeOfEnd = datetime.strptime('{}:{}:{}'.format(_endH, _endM, _endS),timeFormat)
         timeCurrent = datetime.strptime('{}:{}:{}'.format(_currentH, _currentM, _currentS),timeFormat)
 
-        print("ifDateIsBetween ||| timeOfStart: {} ||| timeOfEnd: {} ||| timeCurrent: {}".format(timeOfStart, timeOfEnd, timeCurrent)) 
+        #print("ifDateIsBetween ||| timeOfStart: {} ||| timeOfEnd: {} ||| timeCurrent: {}".format(timeOfStart, timeOfEnd, timeCurrent)) 
         if timeOfStart <= timeOfEnd:
             return timeOfStart <= timeCurrent < timeOfEnd
         else: # over midnight e.g., 23:30-04:15
