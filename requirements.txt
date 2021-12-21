@@ -2,3 +2,4 @@ paho-mqtt
 influxdb
 influxdb-client[ciso]
 marshmallow
+ruamel_yaml
