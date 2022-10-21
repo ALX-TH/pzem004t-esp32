@@ -3,7 +3,7 @@ apiVersion: 1
 datasources:
   - name: InfluxDB
     type: influxdb
-    url: "http://159.65.125.173:8086"
+    url: "http://localhost:8086"
     access: proxy
     user: monitoring
     database: "monitoring"
