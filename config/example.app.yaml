@@ -2,15 +2,19 @@ modules:
 
   application:
   InfluxClient:
+    enabled: false
     url: "http://localhost:8086"
-    token: "****************************"
+    token: "EHZmUloKub6EbPvu5j3MF3fP4ZLeZQ5LQjNibD6gOnUkH0-yyyyyyyyy_iiiiiiiii-xxxxxxxxxxxxxxxx=="
     org: home
     bucket: monitoring
   MQTTClient:
     host: 192.168.0.1
     port: 1883
     user: "mqttuser"
-    password: "*************"
+    password: "mqttpassword"
+  PrometheusClient:
+    enabled: true
+    port: 9163
 
 sensors:
   PZEM004TSensor:

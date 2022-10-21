@@ -1,0 +1,24 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 15s # By default, scrape targets every 15 seconds.
+  scrape_timeout: 2s
+  external_labels:
+      monitor: "pzem004t"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 60s
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  - job_name: 'energy'
+    scrape_interval: 15s
+    metrics_path: /
+    static_configs:
+      - targets: ['prometheus:9163']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        separator: ':'
+        regex: '(.*):(9163)'
+        replacement: 'pzem004t'

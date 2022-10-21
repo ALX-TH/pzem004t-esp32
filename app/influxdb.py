@@ -17,7 +17,7 @@ class InfluxClient(object):
         self.client = None
         self.logger = logger
         self.write_api = None
-        self.INFLUXDB_URL, self.INFLUXDB_TOKEN, self.INFLUXDB_ORG, self.INFLUXDB_BUCKET = self._config(config)
+        self.INFLUXDB_URL, self.INFLUXDB_TOKEN, self.INFLUXDB_ORG, self.INFLUXDB_BUCKET, self.INFLUXDB_ENABLED = self._config(config)
 
     ## Read module configuration
     def _config(self, config: Config):
@@ -31,7 +31,8 @@ class InfluxClient(object):
             token = os.getenv('INFLUXDB_TOKEN', module['token'])
             org = os.getenv('INFLUXDB_ORG', module['org'])
             bucket = os.getenv('INFLUXDB_BUCKET', module['bucket'])
-            return url, token, org, bucket
+            enabled = os.getenv('INFLUXDB_ENABLED', module['enabled'])
+            return url, token, org, bucket, enabled
         except Exception as e:
             self.logger.critical('[InfluxDB] Cannot read configuration for module. Details {}'.format(e))
             sys.exit(1)
@@ -54,6 +55,15 @@ class InfluxClient(object):
                 self.logger.critical('[InfluxDB] Cannot connect to InfluxDB {}. Details {}.'.format(self.INFLUXDB_URL, e))
 
         return result
+
+    ## Check of module enabled
+    def isEnabled(self) -> bool:
+        if self.INFLUXDB_ENABLED:
+            self.logger.debug('[InfluxDB] Module is enabled. Module will process request.')
+            return True
+        else: 
+            self.logger.debug('[InfluxDB] Module is disabled. Enable module in config/app.yaml if needed.')
+            return False
 
     def reconnect(self):
         return self.connect()

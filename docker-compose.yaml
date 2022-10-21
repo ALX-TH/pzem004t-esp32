@@ -26,6 +26,34 @@ services:
     labels:
       org.label-schema.group: "monitoring" 
 
+  prometheus:
+    image: prom/prometheus:v2.39.1
+    container_name: prometheus
+    networks:
+      - pzem004-network
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus/:/etc/prometheus:ro
+      - ./persistent/prometheus:/prometheus:rw
+    command:
+      - '--config.file=/etc/prometheus/configuration.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.read-timeout=1m'
+      - '--query.timeout=1m'
+      - '--query.max-concurrency=32'
+      - '--web.max-connections=128'
+      - '--storage.tsdb.retention.time=96d'
+      - '--storage.tsdb.retention.size=8GB'
+      - '--storage.tsdb.no-lockfile'
+      - '--log.format=json'
+      - '--log.level=info'
+    restart: unless-stopped 
+    labels:
+      org.label-schema.group: "monitoring" 
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -54,6 +82,7 @@ services:
 volumes:
   influxdb_data:
   grafana_data:
+  prometheus_data:
 
 networks:
   pzem004-network:

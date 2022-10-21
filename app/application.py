@@ -9,6 +9,7 @@ from time import sleep
 from app.config import Config
 from app.mqtt import MQTTClient as mqttClk
 from app.influxdb import InfluxClient as influxClk
+from app.prometheus import PrometheusClient as prometheusClk
 from app.sensors.pzem004t import *
 
 MQTT_TOPIC = 'tele/pzem004tv3_87A0B8/SENSOR'
@@ -21,6 +22,7 @@ class Application(object):
         self.config = Config(self.logger, self.pwd)
         self.mqtt = mqttClk(logger, self.config)
         self.influx = influxClk(logger, self.config)
+        self.prometheus = prometheusClk(logger, self.config)
         self.queue = queue.Queue()
         #self.sensors = []
 
@@ -68,6 +70,13 @@ class Application(object):
 
             await asyncio.sleep(10)
 
+    ## async prometheus client
+    async def asyncPrometheusWorker(self, loop):
+        task = asyncio.current_task(loop)
+        self.prometheus.start()
+
+        #self.logger.debug('[APP] Process: {}, status: alive.'.format(task.get_name()))
+
     ## async queue client
     async def asyncQueueWorker(self, loop):
         task = asyncio.current_task(loop)
@@ -80,7 +89,12 @@ class Application(object):
 
                 pzem004 = PZEM004TSensor(message)
                 results = pzem004.get(self.config)
-                self.influx.write_over_api(results)
+
+                if self.influx.isEnabled():
+                    self.influx.write_over_api(results)
+
+                if self.prometheus.isEnabled():
+                    self.prometheus.publish(results)
 
             await asyncio.sleep(1)
             
@@ -90,5 +104,6 @@ class Application(object):
         loop = asyncio.get_event_loop()
         loop.create_task(self.asyncInfluxDb(loop), name='influxdb')
         loop.create_task(self.asyncMqtt(loop), name='mqtt')
+        loop.create_task(self.asyncPrometheusWorker(loop), name='prometheus')
         loop.create_task(self.asyncQueueWorker(loop), name='queue')
         loop.run_forever()

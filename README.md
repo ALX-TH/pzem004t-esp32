@@ -1,6 +1,6 @@
-# PZEM004T to InfluxDB over ESP32 controller
+# PZEM004T to InfluxDB/Prometheus over ESP32 controller
 
-This is a simple script witch allow translate messages from MQTT topic to InfluxDB.
+This is a simple script witch allow translate messages from MQTT topic to InfluxDB (and/or) Prometheus services.
 
 Script support next features:
 ```
@@ -31,12 +31,14 @@ $ docker-compose up -d
 $ python3 bootstrap.py
 ```
 
-## Service
+## Docker services  
 
-| Service        | Link                           | Description |
+| Service        | Link                           | Description  |
 |----------------| ------------------------------ | -------------|
-| Grafana        |
-| InfluxDB UI    |
+| Grafana        | http://localhost:3000          |              |
+| InfluxDB UI    | http://localhost:8086          |              |
+| Prometheus UI  | http://localhost:9090          |              |
+| Prometheus exporter page | http://localhost:9163 |             |
 
 ## Debug
 Script also supports DEBUG mode. Information in this mode will be extended. Please set (pass) variable DEBUG=True to script runtime.

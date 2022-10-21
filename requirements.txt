@@ -3,3 +3,4 @@ influxdb
 influxdb-client[ciso]
 marshmallow
 ruamel_yaml
+prometheus-client
