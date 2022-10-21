@@ -1,5 +1,7 @@
 # PZEM004T to InfluxDB/Prometheus over ESP32 controller
 
+![Dashboard](https://raw.githubusercontent.com/ALX-TH/pzem004-esp32/master/readme/prometheus.png)
+
 This is a simple script witch allow translate messages from MQTT topic to InfluxDB (and/or) Prometheus services.
 
 Script support next features:
