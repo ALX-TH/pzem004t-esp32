@@ -8,19 +8,19 @@ import datetime
 from app.config import Config
 from prometheus_client import start_http_server, Counter, Gauge, Summary, Histogram, Info
 
-TOTAL = Gauge('energy_power_total', 'Total consumed electrical network power for all time, kWh', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-YESTERDAY = Gauge('energy_power_yesterday_total', 'Consumed electrical network power for yesterday, kWh', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-TODAY = Gauge('energy_power_today_total', 'Total electrical network consumption power for current day, kWh', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-PERIOD = Gauge('energy_period', 'Consumed electrical network period', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-CURRENT_POWER = Gauge('energy_power_current', 'Current electrical network consumption power, W', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-APPARENT_POWER = Gauge('energy_power_apparent_current', 'Current electrical network apparent power (volt-amperes), VA', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-REACTIVE_POWER = Gauge('energy_power_reactive_current', 'Current electrical network reactive power (volt-amperes), VAr', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-FACTOR = Gauge('energy_power_factor_current', 'Current electrical network power factor (energy loss, cosφ), PF', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-FREQUENCY = Gauge('energy_frequency_current', 'Current electrical network frequency, Hz', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-VOLTAGE = Gauge('energy_voltage_current', 'Current electrical network voltage, V', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-CURRENT = Gauge('energy_amperes_current', 'Current electrical network amperes, A', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-TOTAL_START_TIME = Gauge('energy_device_first_start_timestamp', 'Timestamp of device first start', ['measurement', 'deviceclass', 'sensor', 'time_period'])
-LAST_MEASUREMENT_TIME = Gauge('energy_last_scrape_timestamp', 'Timestamp of lastest measurement', ['measurement', 'deviceclass', 'sensor', 'time_period'])
+TOTAL = Gauge('energy_power_total', 'Total consumed electrical network power for all time, kWh', ['measurement', 'deviceclass', 'sensor'])
+YESTERDAY = Gauge('energy_power_yesterday_total', 'Consumed electrical network power for yesterday, kWh', ['measurement', 'deviceclass', 'sensor'])
+TODAY = Gauge('energy_power_today_total', 'Total electrical network consumption power for current day, kWh', ['measurement', 'deviceclass', 'sensor'])
+PERIOD = Gauge('energy_period', 'Consumed electrical network period', ['measurement', 'deviceclass', 'sensor'])
+CURRENT_POWER = Gauge('energy_power_current', 'Current electrical network consumption power, W', ['measurement', 'deviceclass', 'sensor'])
+APPARENT_POWER = Gauge('energy_power_apparent_current', 'Current electrical network apparent power (volt-amperes), VA', ['measurement', 'deviceclass', 'sensor'])
+REACTIVE_POWER = Gauge('energy_power_reactive_current', 'Current electrical network reactive power (volt-amperes), VAr', ['measurement', 'deviceclass', 'sensor'])
+FACTOR = Gauge('energy_power_factor_current', 'Current electrical network power factor (energy loss, cosφ), PF', ['measurement', 'deviceclass', 'sensor'])
+FREQUENCY = Gauge('energy_frequency_current', 'Current electrical network frequency, Hz', ['measurement', 'deviceclass', 'sensor'])
+VOLTAGE = Gauge('energy_voltage_current', 'Current electrical network voltage, V', ['measurement', 'deviceclass', 'sensor'])
+CURRENT = Gauge('energy_amperes_current', 'Current electrical network amperes, A', ['measurement', 'deviceclass', 'sensor'])
+TOTAL_START_TIME = Gauge('energy_device_first_start_timestamp', 'Timestamp of device first start', ['measurement', 'deviceclass', 'sensor'])
+LAST_MEASUREMENT_TIME = Gauge('energy_last_scrape_timestamp', 'Timestamp of lastest measurement', ['measurement', 'deviceclass', 'sensor'])
 
 TOTAL_START_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
@@ -74,91 +74,78 @@ class PrometheusClient(object):
             TOTAL.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["total"])
 
             YESTERDAY.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["yesterday"])
 
             TODAY.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["today"])
 
             PERIOD.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["period"])
 
             CURRENT_POWER.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["power"])
 
             APPARENT_POWER.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["apparent_power"])
 
             REACTIVE_POWER.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["reactive_power"])
 
             FACTOR.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["factor"])
 
             FREQUENCY.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["frequency"])
 
             VOLTAGE.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["voltage"])
 
             CURRENT.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(metric["fields"]["current"])
 
             TOTAL_START_TIME.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(round(datetime.datetime.strptime(metric["fields"]["total_start_time"], TOTAL_START_TIME_FORMAT).timestamp()))
 
             LAST_MEASUREMENT_TIME_TIMESTAMP = datetime.datetime.now()
             LAST_MEASUREMENT_TIME.labels(
                 measurement = metric["measurement"], 
                 deviceclass = metric["tags"]["class"], 
-                sensor = metric["tags"]["sensor"],
-                time_period = metric["tags"]["time_period"]
+                sensor = metric["tags"]["sensor"]
             ).set(round(datetime.datetime.timestamp(LAST_MEASUREMENT_TIME_TIMESTAMP)))
