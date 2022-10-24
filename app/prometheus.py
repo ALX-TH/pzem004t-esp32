@@ -21,6 +21,7 @@ VOLTAGE = Gauge('energy_voltage_current', 'Current electrical network voltage, V
 CURRENT = Gauge('energy_amperes_current', 'Current electrical network amperes, A', ['measurement', 'deviceclass', 'sensor'])
 TOTAL_START_TIME = Gauge('energy_device_first_start_timestamp', 'Timestamp of device first start', ['measurement', 'deviceclass', 'sensor'])
 LAST_MEASUREMENT_TIME = Gauge('energy_last_scrape_timestamp', 'Timestamp of lastest measurement', ['measurement', 'deviceclass', 'sensor'])
+SUBSCRIPTION_ID = Gauge('energy_subscription_id', 'Current subscription id', ['measurement', 'deviceclass', 'sensor'])
 
 TOTAL_START_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
@@ -149,3 +150,9 @@ class PrometheusClient(object):
                 deviceclass = metric["tags"]["class"], 
                 sensor = metric["tags"]["sensor"]
             ).set(round(datetime.datetime.timestamp(LAST_MEASUREMENT_TIME_TIMESTAMP)))
+
+            SUBSCRIPTION_ID.labels(
+                measurement = metric["measurement"], 
+                deviceclass = metric["tags"]["class"], 
+                sensor = metric["tags"]["sensor"]
+            ).set(metric["tags"]["time_period_id"])

@@ -105,7 +105,6 @@ class EnergySensor(object):
         timeOfEnd = datetime.strptime('{}:{}:{}'.format(_endH, _endM, _endS),timeFormat)
         timeCurrent = datetime.strptime('{}:{}:{}'.format(_currentH, _currentM, _currentS),timeFormat)
 
-        #print("ifDateIsBetween ||| timeOfStart: {} ||| timeOfEnd: {} ||| timeCurrent: {}".format(timeOfStart, timeOfEnd, timeCurrent)) 
         if timeOfStart <= timeOfEnd:
             return timeOfStart <= timeCurrent < timeOfEnd
         else: # over midnight e.g., 23:30-04:15
@@ -134,7 +133,8 @@ class EnergySensor(object):
             for condition in conditions:
                 if type(condition) is dict:
                     if self.ifDateIsBetween(condition['after'], condition['before'], timeOfMeasurement):
-                        return scheduleName
+                        scheduleId = list(schedules).index(scheduleName)
+                        return scheduleName, scheduleId
                 else:
                     return "undefined"
 
@@ -167,7 +167,11 @@ class PZEM004TSensor():
 
         tags['class'] = SENSOR_CLASS
         tags['sensor'] = SENSOR_NAME
-        tags['time_period'] = self.sensor.getSubscriptionType(config)
+
+        time_period_name, time_period_id = self.sensor.getSubscriptionType(config)
+
+        tags['time_period'] = time_period_name
+        tags['time_period_id'] = time_period_id
 
         response['measurement'] = SENSOR_MEASUREMENT
         response['tags'] = tags
