@@ -84,17 +84,24 @@ class Application(object):
 
         while True:
             if not self.queue.empty():
-                message = self.queue.get(block=False)
-                self.logger.debug('[APP] Got message from queue: {}'.format(message))
 
-                pzem004 = PZEM004TSensor(message)
-                results = pzem004.get(self.config)
+                try:
+                    message = self.queue.get(block=False)
+                    self.logger.debug('[APP] Got message from queue: {}'.format(message))
 
-                if self.influx.isEnabled():
-                    self.influx.write_over_api(results)
+                    pzem004 = PZEM004TSensor(message)
+                    results = pzem004.get(self.config)
 
-                if self.prometheus.isEnabled():
-                    self.prometheus.publish(results)
+                    if self.influx.isEnabled():
+                        self.influx.write_over_api(results)
+
+                    if self.prometheus.isEnabled():
+                        self.prometheus.publish(results)
+
+                except Exception as error:
+                    self.logger.error('[APP] Process: {}. Will clean up queue. Error: {}'.format(task.get_name(), error))
+                    self.queue.empty()
+                    continue
 
             await asyncio.sleep(1)
             

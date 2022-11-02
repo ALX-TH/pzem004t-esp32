@@ -1,4 +1,4 @@
-# PZEM004T to InfluxDB/Prometheus over ESP32 controller
+# PZEM004T metrics to InfluxDB/Prometheus over ESP32 controller and MQTT
 
 ![Dashboard](https://raw.githubusercontent.com/ALX-TH/pzem004-esp32/master/readme/prometheus.png)
 
@@ -26,7 +26,7 @@ docker-compose
 
 ## Deploy
 ```
-$ mv config/example.app.yaml config/app.yaml
+$ cp config/example.app.yaml config/app.yaml
 $ python3 -m pip install -r requirements.txt
 $ docker network create pzem004
 $ docker-compose up -d
