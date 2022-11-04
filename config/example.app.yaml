@@ -1,6 +1,6 @@
 modules:
 
-  application:
+ application:
   InfluxClient:
     enabled: false
     url: "http://localhost:8086"
