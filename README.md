@@ -14,7 +14,7 @@ Script support next features:
 ```
 
 ## How its works
-Script connects to MQTT server and subscribe for updates on configured topic. When new message received script creates payload for InfluxDB from message payload.
+Script connects to MQTT server and subscribe for updates on configured topic. When new message received script creates payload for InfluxDB/Prometheus from message payload.
 During processing messege scripts can add information about energy tariff to payload, please check example in example.app.yaml at config directory.
 
 ## Stack
